@@ -20,10 +20,6 @@ public class MinefieldApp {
 
 		drawField(rows, columns);
 		displayField(rows, columns);
-
-		placeMines(scan, rows, columns);
-
-		// doUncover(scan);
 		flags = doFlag(scan, flags);
 		displaySolution(containsBomb);
 	}
@@ -36,7 +32,7 @@ public class MinefieldApp {
 	public static void displayField(int rows, int columns) {
 		for (int i = 0; i < columns; ++i) {
 			if (i == 0) {
-				System.out.print(" ");
+				System.out.print("  ");
 			}
 			System.out.print(i + 1 + " ");
 		}
@@ -46,7 +42,7 @@ public class MinefieldApp {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				if (j == 0) {
-					System.out.print(i + 1);
+					System.out.print(i + 1 + " ");
 				}
 				System.out.print("- ");
 			}
