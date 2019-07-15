@@ -15,8 +15,14 @@ public class MinefieldApp {
 		int columns = scan.nextInt();
 
 		drawField(rows, columns);
+		displayField(rows, columns);
 
 		placeMines(scan, rows, columns);
+		
+		//doUncover(scan);
+		doFlag(scan, rows, columns);
+		
+		
 
 	}
 
@@ -25,7 +31,44 @@ public class MinefieldApp {
 		return field;
 	}
 	
-	public static void displayField() {
+	public static void displayField(int rows, int columns) {
+		for (int i = 0; i < columns; ++i) {
+			if (i == 0) {
+				System.out.print(" ");
+			}
+			System.out.print(i + 1 + " ");
+		}
+		
+		System.out.println();
+		
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0 ; j < columns; j++) {
+				if (j == 0) {
+					System.out.print(i + 1);
+				}
+				System.out.print("- ");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void doFlag(Scanner scan, int rows, int columns) {
+		System.out.println("What cell would you like target? \nEnter row #: ");
+		int rowInput = scan.nextInt();
+		System.out.println("Enter column #: ");
+		int columnInput = scan.nextInt();
+		System.out.println("Would you like to flag or uncover?");
+		scan.nextLine();
+		String input = scan.nextLine();
+		boolean[][] flags = new boolean[rows][columns];
+		
+		if (input.equals("flag")) {
+			 flags[rowInput][columnInput] = true;
+		} 
+		System.out.println(flags[rowInput][columnInput]);
+	}
+	
+	public static void placeFlag() {
 		
 	}
 
