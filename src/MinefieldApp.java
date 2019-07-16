@@ -13,6 +13,8 @@ public class MinefieldApp {
 		System.out.println("How many columns would you like?");
 
 		int columns = scan.nextInt();
+		
+		boolean[][] uncover = new boolean[rows][columns];
 
 		boolean[][] flags = new boolean[rows][columns];
 		//System.out.println(flags.length);
