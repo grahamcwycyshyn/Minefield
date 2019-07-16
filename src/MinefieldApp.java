@@ -34,12 +34,14 @@ public class MinefieldApp {
 		while (!terminateGame) {
 			//displayField(gameState);
 			userTarget = getTarget(scan, gameState);
+			scan.nextLine();
 			playChoice = choosePlay(scan);
 			if (playChoice == Play.FLAG) {
 				doFlag(gameState, userTarget);
 				displayField(gameState);
 			} else if (playChoice == Play.UNCOVER) {
 				doUncover(containsBomb, gameState, userTarget);
+				displayField(gameState);
 			}
 			scan.nextLine();
 			//displayField(gameState);
@@ -119,11 +121,12 @@ public class MinefieldApp {
 	}
 	
 	public static Play choosePlay(Scanner scan) {
-		System.out.println("Would you like to flag a cell or uncover it?");
-		String userInput = scan.nextLine();
+		System.out.println("Would you like to: \n1) flag a cell, or\n2) uncover it? \nEnter 1 or 2: ");
+		//scan.nextLine();
+		int userInput = scan.nextInt();
 		Play input;
 		
-		if (userInput.equalsIgnoreCase("flag")) {
+		if (userInput == 1) {
 			input = Play.FLAG;
 		} else {
 			input = Play.UNCOVER;
