@@ -26,7 +26,9 @@ public class Validate {
 	public static boolean getFlag(Scanner scan) {
 		String input = null;
 		boolean isValid = true;
+
 		System.out.println("Would you like to flag? (y/n)");
+
 		do {
 			try {
 			input = scan.nextLine();

@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class MinefieldApp {
 	public static void main(String[] args) {
+		boolean terminateGame = false;
 
 		Scanner scan = new Scanner(System.in);
 
@@ -25,10 +26,19 @@ public class MinefieldApp {
 		boolean[][] containsBomb = placeMines(scan, rows, columns);
 
 		drawField(rows, columns);
-		displayField(rows, columns);
+		displayField(gameState);
 		scan.nextLine();
-//		flags = doFlag(scan, flags);
-		displaySolution(containsBomb, gameState);
+		
+		while (!terminateGame) {
+			
+			doFlag(scan, gameState);
+			displayField(gameState);
+			doUncover(scan, containsBomb, gameState);
+			scan.nextLine();
+			displayField(gameState);
+		}
+		
+		//displaySolution(containsBomb, gameState);
 	}
 
 	public static int[][] drawField(int rows, int columns) {
@@ -36,8 +46,8 @@ public class MinefieldApp {
 		return field;
 	}
 
-	public static void displayField(int rows, int columns) {
-		for (int i = 0; i < columns; ++i) {
+	public static void displayField(Field gameState[][]) {
+		for (int i = 0; i < gameState[0].length; ++i) {
 			if (i == 0) {
 				System.out.print("  ");
 			}
@@ -46,15 +56,50 @@ public class MinefieldApp {
 
 		System.out.println();
 
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
+		for (int i = 0; i < gameState.length; i++) {
+			for (int j = 0; j < gameState[0].length; j++) {
 				if (j == 0) {
 					System.out.print(i + 1 + " ");
 				}
-				System.out.print("- ");
+				if (gameState[i][j] == null) {
+					System.out.print("- ");
+				} else {
+				System.out.print(print(gameState, i ,j));
+				}
 			}
 			System.out.println();
 		}
+		
+		
+	}
+	
+	
+	public static String print(Field[][] gameState, int i, int j) {
+		switch(gameState[i][j]) {
+			case one:
+				return "1 ";
+			case two:
+				return "2 ";
+			case three:
+				return "3 ";
+			case four:
+				return "4 ";
+			case five:
+				return "5 ";
+			case six:
+				return "6 ";
+			case seven:
+				return "7 ";
+			case eight:
+				return "8 ";
+			case covered:
+				return "- ";
+			case flag:
+				return "* ";
+			default:
+				return "  ";
+		}
+		
 	}
 
 	public static int whatRow(Scanner scan, int rows) {
@@ -78,7 +123,7 @@ public class MinefieldApp {
 			System.out.println("Please enter a number between 1 and 9: ");
 		} while (!isValid);
 		
-		return rowInput;
+		return (rowInput - 1);
 	}
 
 	public static int whatColumn(Scanner scan, int columns) {
@@ -102,7 +147,7 @@ public class MinefieldApp {
 			System.out.println("Please enter a number between 1 and 9: ");
 		} while (!isValid);
 		
-		return columnInput;
+		return (columnInput - 1);
 	}
 
 	public static Field[][] doFlag(Scanner scan, Field[][] gameState) {
@@ -112,8 +157,8 @@ public class MinefieldApp {
 			int rowInput = whatRow(scan, gameState.length); //this isn't working to pass in the array length as an int
 			
 			int columnInput = whatColumn(scan, gameState[0].length); //this isn't working to pass in the array length as an int
-			if(gameState[rowInput][columnInput] == Field.covered) {
-			gameState[rowInput][columnInput] = Field.flag;
+			if(gameState[rowInput][columnInput] == Field.covered || gameState[rowInput][columnInput] == null) {
+				gameState[rowInput][columnInput] = Field.flag;
 			} else if(gameState[rowInput][columnInput] == Field.flag) {
 				gameState[rowInput][columnInput] = Field.covered;
 			}
@@ -125,6 +170,7 @@ public class MinefieldApp {
 
 	public static Field[][] doUncover(Scanner scan, boolean[][] containsBomb, Field[][] gameState) {
 
+		System.out.println("Time to target.");
 		int rowInput = whatRow(scan, gameState.length);
 		int columnInput = whatColumn(scan, gameState[0].length);
 
