@@ -40,6 +40,7 @@ public class MinefieldApp {
 				doFlag(gameState, userTarget);
 			} else if (playChoice == Play.UNCOVER) {
 				doUncover(containsBomb, gameState, userTarget);
+				clear(containsBomb, gameState, userTarget[0], userTarget[1]);
 			}
 
 			terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
@@ -238,6 +239,75 @@ public class MinefieldApp {
 		return gameState;
 	}
 
+	public static void clear(boolean[][] containsBomb, Field[][] gameState, int x, int y) {
+		
+		try {
+			if (gameState[x - 1][y - 1] == Field.empty) {
+				clear(containsBomb, gameState, x - 1, y - 1);
+			}
+			gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x][y - 1] == Field.empty) {
+				clear(containsBomb, gameState, x, y - 1);
+			}
+			gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x + 1][y - 1] == Field.empty) {
+				clear(containsBomb, gameState, x + 1, y - 1);
+			}
+			gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x - 1][y] == Field.empty) {
+				clear(containsBomb, gameState, x - 1, y);
+			}
+			gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x + 1][y] == Field.empty) {
+				clear(containsBomb, gameState, x + 1, y);
+			}
+			gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x - 1][y + 1] == Field.empty) {
+				clear(containsBomb, gameState, x - 1, y + 1);
+			}
+			gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x][y + 1] == Field.empty) {
+				clear(containsBomb, gameState, x, y + 1);
+			}
+			gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (gameState[x + 1][y + 1] == Field.empty) {
+				clear(containsBomb, gameState, x + 1, y + 1);
+			}
+			gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		
+	}
+	
 	public static Field minesNear(int x, int y, boolean[][] containsBomb) {
 
 		int mines = 0;
