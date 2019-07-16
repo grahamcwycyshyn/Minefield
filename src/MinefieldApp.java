@@ -116,7 +116,7 @@ public class MinefieldApp {
 		return flags;
 	}
 
-	public static void doUncover(Scanner scan, boolean[][] containsBomb, boolean[][] flags) {
+	public static boolean[][] doUncover(Scanner scan, boolean[][] containsBomb, boolean[][] flags, boolean[][] uncover) {
 
 		int rowInput = whatRow(scan, flags.length);
 		int columnInput = whatColumn(scan, flags[0].length);
@@ -128,8 +128,9 @@ public class MinefieldApp {
 			System.out.println("Game Over");
 
 		} else {
-
+			uncover[rowInput][columnInput] = true;
 		}
+		return uncover;
 	}
 
 	public static char minesNear(int x, int y, boolean[][] containsBomb) {
