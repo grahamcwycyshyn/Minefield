@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MinefieldApp {
@@ -15,11 +15,14 @@ public class MinefieldApp {
 		int columns = scan.nextInt();
 
 		boolean[][] flags = new boolean[rows][columns];
+		//System.out.println(flags.length);
+		//System.out.println(flags[0].length);
 
 		boolean[][] containsBomb = placeMines(scan, rows, columns);
 
 		drawField(rows, columns);
 		displayField(rows, columns);
+		scan.nextLine();
 		flags = doFlag(scan, flags);
 		displaySolution(containsBomb);
 	}
@@ -50,29 +53,60 @@ public class MinefieldApp {
 		}
 	}
 
-	public static int whatRow(Scanner scan) {
+	public static int whatRow(Scanner scan, int rows) {
+		int rowInput = 0;
+		boolean isValid = true;
+		
 		System.out.println("What cell would you like target? \nEnter row #: ");
-		int rowInput = scan.nextInt();
+		do {
+			try {
+				rowInput = scan.nextInt();
+			} catch (InputMismatchException ex) {
+				isValid = false;
+				scan.nextLine();
+			}
+			if (rowInput < 1 || rowInput > rows) {  //rows should be reflecting flags.length from the whatRows() call
+				isValid = false;
+			} else {
+				isValid = true;
+				break;
+			}
+			System.out.println("Please enter a number between 1 and 9: ");
+		} while (!isValid);
+		
 		return rowInput;
 	}
 
-	public static int whatColumn(Scanner scan) {
-
+	public static int whatColumn(Scanner scan, int columns) {
+		int columnInput = 0;
+		boolean isValid = true;
+		
 		System.out.println("Enter column #: ");
-		int columnInput = scan.nextInt();
+		do {
+			try {
+				columnInput = scan.nextInt();
+			} catch (InputMismatchException ex) {
+				isValid = false;
+				scan.nextLine();
+			}
+			if (columnInput < 1 || columnInput > columns) { //columns should be reflecting flags[0].length
+				isValid = false;
+			} else {
+				isValid = true;
+				break;
+			}
+			System.out.println("Please enter a number between 1 and 9: ");
+		} while (!isValid);
+		
 		return columnInput;
 	}
 
 	public static boolean[][] doFlag(Scanner scan, boolean[][] flags) {
 
-		System.out.println("Would you like to flag? (y/n)");
-		scan.nextLine();
-		String input = scan.nextLine();
+		if (Validate.getFlag(scan)) {
 
-		if (input.substring(0, 1).equalsIgnoreCase("y")) {
-
-			int rowInput = whatRow(scan);
-			int columnInput = whatColumn(scan);
+			int rowInput = whatRow(scan, flags.length); //this isn't working to pass in the array length as an int
+			int columnInput = whatColumn(scan, flags[0].length); //this isn't working to pass in the array length as an int
 			flags[rowInput][columnInput] = true;
 			return flags;
 
@@ -82,8 +116,8 @@ public class MinefieldApp {
 
 	public static void doUncover(Scanner scan, boolean[][] containsBomb, boolean[][] flags) {
 
-		int rowInput = whatRow(scan);
-		int columnInput = whatColumn(scan);
+		int rowInput = whatRow(scan, flags.length);
+		int columnInput = whatColumn(scan, flags[0].length);
 
 		if (flags[rowInput][columnInput] == true) {
 			System.out.println("This cell is flagged, try another!");
@@ -203,11 +237,9 @@ public class MinefieldApp {
 	}
 
 	public static boolean[][] placeMines(Scanner scan, int rows, int columns) {
-
-		System.out.println("What bomb density would you like? (enter a percentage)");
-
-		Double input = scan.nextDouble();
-
+		
+		double input = Validate.getDouble(scan);
+		
 		int bombDensity = (int) ((input / 100) * (rows * columns));
 
 		boolean[][] containsBomb = new boolean[rows][columns];
@@ -227,7 +259,6 @@ public class MinefieldApp {
 
 			}
 		}
-
 		return containsBomb;
 	}
 }
