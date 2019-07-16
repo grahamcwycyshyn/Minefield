@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class MinefieldApp {
 	public static void main(String[] args) {
 		boolean terminateGame = false;
+		Play playChoice;
 
 		Scanner scan = new Scanner(System.in);
 
@@ -24,18 +25,24 @@ public class MinefieldApp {
 		//System.out.println(flags[0].length);
 
 		boolean[][] containsBomb = placeMines(scan, rows, columns);
+		int[] userTarget = new int[2];
 
 		drawField(rows, columns);
-		displayField(gameState);
+		//displayField(gameState);
 		scan.nextLine();
 		
 		while (!terminateGame) {
-			
-			doFlag(scan, gameState);
-			displayField(gameState);
-			doUncover(scan, containsBomb, gameState);
+			//displayField(gameState);
+			userTarget = getTarget(scan, gameState);
+			playChoice = choosePlay(scan);
+			if (playChoice == Play.FLAG) {
+				doFlag(gameState, userTarget);
+				displayField(gameState);
+			} else if (playChoice == Play.UNCOVER) {
+				doUncover(containsBomb, gameState, userTarget);
+			}
 			scan.nextLine();
-			displayField(gameState);
+			//displayField(gameState);
 		}
 		
 		//displaySolution(containsBomb, gameState);
@@ -75,6 +82,7 @@ public class MinefieldApp {
 	
 	
 	public static String print(Field[][] gameState, int i, int j) {
+
 		switch(gameState[i][j]) {
 			case one:
 				return "1 ";
@@ -99,6 +107,29 @@ public class MinefieldApp {
 			default:
 				return "  ";
 		}
+		
+	}
+
+	public static int[] getTarget(Scanner scan, Field[][] gameState) {
+		System.out.println("Time to target.");
+		int rowInput = whatRow(scan, gameState.length);
+		int columnInput = whatColumn(scan, gameState[0].length);
+		int[] userTarget = {rowInput, columnInput};
+		return userTarget;
+	}
+	
+	public static Play choosePlay(Scanner scan) {
+		System.out.println("Would you like to flag a cell or uncover it?");
+		String userInput = scan.nextLine();
+		Play input;
+		
+		if (userInput.equalsIgnoreCase("flag")) {
+			input = Play.FLAG;
+		} else {
+			input = Play.UNCOVER;
+		} 
+		
+		return input;
 		
 	}
 
@@ -150,38 +181,40 @@ public class MinefieldApp {
 		return (columnInput - 1);
 	}
 
-	public static Field[][] doFlag(Scanner scan, Field[][] gameState) {
+	public static Field[][] doFlag(Field[][] gameState, int[] userTarget) {
 
-		if (Validate.getFlag(scan)) {
-
-			int rowInput = whatRow(scan, gameState.length); //this isn't working to pass in the array length as an int
+//		if (Validate.getFlag(scan)) {
+//
+//			int rowInput = whatRow(scan, gameState.length); //this isn't working to pass in the array length as an int
 			
-			int columnInput = whatColumn(scan, gameState[0].length); //this isn't working to pass in the array length as an int
-			if(gameState[rowInput][columnInput] == Field.covered || gameState[rowInput][columnInput] == null) {
-				gameState[rowInput][columnInput] = Field.flag;
-			} else if(gameState[rowInput][columnInput] == Field.flag) {
-				gameState[rowInput][columnInput] = Field.covered;
+//			int columnInput = whatColumn(scan, gameState[0].length); //this isn't working to pass in the array length as an int
+			
+		if(gameState[userTarget[0]][userTarget[1]] == Field.covered || gameState[userTarget[0]][userTarget[1]] == null) {
+				gameState[userTarget[0]][userTarget[1]] = Field.flag;
+			} else if(gameState[userTarget[0]][userTarget[1]] == Field.flag) {
+				gameState[userTarget[0]][userTarget[1]] = Field.covered;
 			}
 			return gameState;
 
-		}
-		return gameState;
+		//}
+		//return gameState;
 	}
 
-	public static Field[][] doUncover(Scanner scan, boolean[][] containsBomb, Field[][] gameState) {
+	public static Field[][] doUncover(boolean[][] containsBomb, Field[][] gameState, int[] userTarget) {
 
-		System.out.println("Time to target.");
-		int rowInput = whatRow(scan, gameState.length);
-		int columnInput = whatColumn(scan, gameState[0].length);
+//		System.out.println("Time to target.");
+//		int rowInput = whatRow(scan, gameState.length);
+//		int columnInput = whatColumn(scan, gameState[0].length);
 
-		if (gameState[rowInput][columnInput] == Field.flag) {
+		if (gameState[userTarget[0]][userTarget[1]] == Field.flag) {
 			System.out.println("This cell is flagged, try another!");
 
-		} else if (containsBomb[rowInput][columnInput] == true) {
+		} else if (containsBomb[userTarget[0]][userTarget[1]] == true) {
 			System.out.println("Game Over");
+			displaySolution(containsBomb, gameState);
 
 		} else {
-			gameState[rowInput][columnInput] = minesNear(rowInput, columnInput, containsBomb);
+			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
 			
 		}
 		return gameState;
