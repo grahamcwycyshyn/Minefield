@@ -15,39 +15,56 @@ public class MinefieldApp {
 		System.out.println("How many columns would you like?");
 
 		int columns = scan.nextInt();
-		
+
 		Field[][] gameState = new Field[rows][columns];
-		
+
 		boolean[][] uncover = new boolean[rows][columns];
 
 		boolean[][] flags = new boolean[rows][columns];
-		//System.out.println(flags.length);
-		//System.out.println(flags[0].length);
+		// System.out.println(flags.length);
+		// System.out.println(flags[0].length);
 
 		boolean[][] containsBomb = placeMines(scan, rows, columns);
 		int[] userTarget = new int[2];
 
 		drawField(rows, columns);
-		//displayField(gameState);
+		// displayField(gameState);
 		scan.nextLine();
-		
+
 		while (!terminateGame) {
-			//displayField(gameState);
+			// displayField(gameState);
 			userTarget = getTarget(scan, gameState);
 			scan.nextLine();
 			playChoice = choosePlay(scan);
 			if (playChoice == Play.FLAG) {
 				doFlag(gameState, userTarget);
-				displayField(gameState);
 			} else if (playChoice == Play.UNCOVER) {
 				doUncover(containsBomb, gameState, userTarget);
+			}
+
+			terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
+			if (terminateGame == false) {
 				displayField(gameState);
 			}
 			scan.nextLine();
-			//displayField(gameState);
+			// displayField(gameState);
 		}
-		
-		//displaySolution(containsBomb, gameState);
+
+		// displaySolution(containsBomb, gameState);
+	}
+
+	public static boolean winOrLose(int[] userTarget, boolean[][] containsBomb, Field[][] gameState,
+			boolean terminateGame) {
+
+		if (containsBomb[userTarget[0]][userTarget[1]] == true) {
+			System.out.println("Game Over");
+			displaySolution(containsBomb, gameState);
+			terminateGame = true;
+			return terminateGame;
+		} else {
+			terminateGame = false;
+			return terminateGame;
+		}
 	}
 
 	public static int[][] drawField(int rows, int columns) {
@@ -73,73 +90,71 @@ public class MinefieldApp {
 				if (gameState[i][j] == null) {
 					System.out.print("- ");
 				} else {
-				System.out.print(print(gameState, i ,j));
+					System.out.print(print(gameState, i, j));
 				}
 			}
 			System.out.println();
 		}
-		
-		
+
 	}
-	
-	
+
 	public static String print(Field[][] gameState, int i, int j) {
 
-		switch(gameState[i][j]) {
-			case one:
-				return "1 ";
-			case two:
-				return "2 ";
-			case three:
-				return "3 ";
-			case four:
-				return "4 ";
-			case five:
-				return "5 ";
-			case six:
-				return "6 ";
-			case seven:
-				return "7 ";
-			case eight:
-				return "8 ";
-			case covered:
-				return "- ";
-			case flag:
-				return "* ";
-			default:
-				return "  ";
+		switch (gameState[i][j]) {
+		case one:
+			return "1 ";
+		case two:
+			return "2 ";
+		case three:
+			return "3 ";
+		case four:
+			return "4 ";
+		case five:
+			return "5 ";
+		case six:
+			return "6 ";
+		case seven:
+			return "7 ";
+		case eight:
+			return "8 ";
+		case covered:
+			return "- ";
+		case flag:
+			return "* ";
+		default:
+			return "  ";
 		}
-		
+
 	}
 
 	public static int[] getTarget(Scanner scan, Field[][] gameState) {
 		System.out.println("Time to target.");
 		int rowInput = whatRow(scan, gameState.length);
 		int columnInput = whatColumn(scan, gameState[0].length);
-		int[] userTarget = {rowInput, columnInput};
+		int[] userTarget = { rowInput, columnInput };
 		return userTarget;
 	}
-	
+
 	public static Play choosePlay(Scanner scan) {
 		System.out.println("Would you like to: \n1) flag a cell, or\n2) uncover it? \nEnter 1 or 2: ");
-		//scan.nextLine();
+		// scan.nextLine();
 		int userInput = scan.nextInt();
 		Play input;
-		
+
 		if (userInput == 1) {
 			input = Play.FLAG;
 		} else {
 			input = Play.UNCOVER;
-		} 
-		
+		}
+
 		return input;
-		
+
 	}
 
 	public static int whatRow(Scanner scan, int rows) {
 		int rowInput = 0;
 		boolean isValid = true;
-		
+
 		System.out.println("What cell would you like target? \nEnter row #: ");
 		do {
 			try {
@@ -148,7 +163,7 @@ public class MinefieldApp {
 				isValid = false;
 				scan.nextLine();
 			}
-			if (rowInput < 1 || rowInput > rows) {  //rows should be reflecting flags.length from the whatRows() call
+			if (rowInput < 1 || rowInput > rows) { // rows should be reflecting flags.length from the whatRows() call
 				isValid = false;
 			} else {
 				isValid = true;
@@ -156,14 +171,14 @@ public class MinefieldApp {
 			}
 			System.out.println("Please enter a number between 1 and 9: ");
 		} while (!isValid);
-		
+
 		return (rowInput - 1);
 	}
 
 	public static int whatColumn(Scanner scan, int columns) {
 		int columnInput = 0;
 		boolean isValid = true;
-		
+
 		System.out.println("Enter column #: ");
 		do {
 			try {
@@ -172,7 +187,7 @@ public class MinefieldApp {
 				isValid = false;
 				scan.nextLine();
 			}
-			if (columnInput < 1 || columnInput > columns) { //columns should be reflecting flags[0].length
+			if (columnInput < 1 || columnInput > columns) { // columns should be reflecting flags[0].length
 				isValid = false;
 			} else {
 				isValid = true;
@@ -180,7 +195,7 @@ public class MinefieldApp {
 			}
 			System.out.println("Please enter a number between 1 and 9: ");
 		} while (!isValid);
-		
+
 		return (columnInput - 1);
 	}
 
@@ -189,18 +204,20 @@ public class MinefieldApp {
 //		if (Validate.getFlag(scan)) {
 //
 //			int rowInput = whatRow(scan, gameState.length); //this isn't working to pass in the array length as an int
-			
-//			int columnInput = whatColumn(scan, gameState[0].length); //this isn't working to pass in the array length as an int
-			
-		if(gameState[userTarget[0]][userTarget[1]] == Field.covered || gameState[userTarget[0]][userTarget[1]] == null) {
-				gameState[userTarget[0]][userTarget[1]] = Field.flag;
-			} else if(gameState[userTarget[0]][userTarget[1]] == Field.flag) {
-				gameState[userTarget[0]][userTarget[1]] = Field.covered;
-			}
-			return gameState;
 
-		//}
-		//return gameState;
+//			int columnInput = whatColumn(scan, gameState[0].length); //this isn't working to pass in the array length as an int
+
+		if (gameState[userTarget[0]][userTarget[1]] == Field.covered
+				|| gameState[userTarget[0]][userTarget[1]] == null) {
+			gameState[userTarget[0]][userTarget[1]] = Field.flag;
+
+		} else if (gameState[userTarget[0]][userTarget[1]] == Field.flag) {
+			gameState[userTarget[0]][userTarget[1]] = Field.covered;
+		}
+		return gameState;
+
+		// }
+		// return gameState;
 	}
 
 	public static Field[][] doUncover(boolean[][] containsBomb, Field[][] gameState, int[] userTarget) {
@@ -213,12 +230,10 @@ public class MinefieldApp {
 			System.out.println("This cell is flagged, try another!");
 
 		} else if (containsBomb[userTarget[0]][userTarget[1]] == true) {
-			System.out.println("Game Over");
-			displaySolution(containsBomb, gameState);
-
+			gameState[userTarget[0]][userTarget[1]] = Field.covered;
 		} else {
 			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
-			
+
 		}
 		return gameState;
 	}
@@ -291,8 +306,8 @@ public class MinefieldApp {
 
 		}
 
-		switch(mines) {
-			
+		switch (mines) {
+
 		case 1:
 			return Field.one;
 		case 2:
@@ -336,25 +351,26 @@ public class MinefieldApp {
 				if (containsBomb[i][j] == true) {
 					System.out.print("* ");
 				} else {
-					if(minesNear(i, j, containsBomb) == Field.one) {
+					if (minesNear(i, j, containsBomb) == Field.one) {
 						System.out.print("1 ");
-					} else if(minesNear(i, j, containsBomb) == Field.two) {
+					} else if (minesNear(i, j, containsBomb) == Field.two) {
 						System.out.print("2 ");
-					} else if(minesNear(i, j, containsBomb) == Field.three) {
+					} else if (minesNear(i, j, containsBomb) == Field.three) {
 						System.out.print("3 ");
-					} else if(minesNear(i, j, containsBomb) == Field.four) {
+					} else if (minesNear(i, j, containsBomb) == Field.four) {
 						System.out.print("4 ");
-					}else if (minesNear(i, j, containsBomb) == Field.five) {
+					} else if (minesNear(i, j, containsBomb) == Field.five) {
 						System.out.print("5 ");
-					}else if(minesNear(i, j, containsBomb) == Field.six) {
+					} else if (minesNear(i, j, containsBomb) == Field.six) {
 						System.out.print("6 ");
-					}else if(minesNear(i, j, containsBomb) == Field.seven) {
+					} else if (minesNear(i, j, containsBomb) == Field.seven) {
 						System.out.print("7 ");
-					} else if(minesNear(i, j, containsBomb) == Field.eight) {
+					} else if (minesNear(i, j, containsBomb) == Field.eight) {
 						System.out.print("8 ");
 					} else {
 						System.out.print("  ");
-					};
+					}
+					;
 				}
 			}
 			System.out.println();
@@ -362,9 +378,9 @@ public class MinefieldApp {
 	}
 
 	public static boolean[][] placeMines(Scanner scan, int rows, int columns) {
-		
+
 		double input = Validate.getDouble(scan);
-		
+
 		int bombDensity = (int) ((input / 100) * (rows * columns));
 
 		boolean[][] containsBomb = new boolean[rows][columns];
