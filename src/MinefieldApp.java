@@ -40,7 +40,6 @@ public class MinefieldApp {
 				doFlag(gameState, userTarget);
 			} else if (playChoice == Play.UNCOVER) {
 				doUncover(containsBomb, gameState, userTarget);
-				clear(containsBomb, gameState, userTarget[0], userTarget[1]);
 			}
 
 			terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
@@ -232,7 +231,11 @@ public class MinefieldApp {
 
 		} else if (containsBomb[userTarget[0]][userTarget[1]] == true) {
 			gameState[userTarget[0]][userTarget[1]] = Field.covered;
-		} else {
+		} else if(minesNear(userTarget[0], userTarget[1], containsBomb) == Field.empty){
+			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
+			clear(containsBomb, gameState, userTarget[0], userTarget[1]);
+		}else{
+		
 			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
 
 		}
@@ -242,65 +245,65 @@ public class MinefieldApp {
 	public static void clear(boolean[][] containsBomb, Field[][] gameState, int x, int y) {
 		
 		try {
-			if (gameState[x - 1][y - 1] == Field.empty) {
-				clear(containsBomb, gameState, x - 1, y - 1);
-			}
+//			if (minesNear(x-1, y-1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x - 1, y - 1);
+//			}
 			gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x][y - 1] == Field.empty) {
-				clear(containsBomb, gameState, x, y - 1);
-			}
+//			if (minesNear(x, y-1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x, y - 1);
+//			}
 			gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x + 1][y - 1] == Field.empty) {
-				clear(containsBomb, gameState, x + 1, y - 1);
-			}
+//			if (minesNear(x+1, y-1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x + 1, y - 1);
+//			}
 			gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x - 1][y] == Field.empty) {
-				clear(containsBomb, gameState, x - 1, y);
-			}
+//			if (minesNear(x-1, y, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x - 1, y);
+//			}
 			gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x + 1][y] == Field.empty) {
-				clear(containsBomb, gameState, x + 1, y);
-			}
+//			if (minesNear(x+1, y, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x + 1, y);
+//			}
 			gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x - 1][y + 1] == Field.empty) {
-				clear(containsBomb, gameState, x - 1, y + 1);
-			}
+//			if (minesNear(x-1, y+1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x - 1, y + 1);
+//			}
 			gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x][y + 1] == Field.empty) {
-				clear(containsBomb, gameState, x, y + 1);
-			}
+//			if (minesNear(x, y+1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x, y + 1);
+//			}
 			gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-			if (gameState[x + 1][y + 1] == Field.empty) {
-				clear(containsBomb, gameState, x + 1, y + 1);
-			}
+//			if (minesNear(x+1, y+1, containsBomb) == Field.empty) {
+//				clear(containsBomb, gameState, x + 1, y + 1);
+//			}
 			gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
