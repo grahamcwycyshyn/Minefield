@@ -70,15 +70,31 @@ public class MinefieldApp {
 		
 		int row = gameState.length;
 		int column =gameState[0].length;
-		int count = 0;
+		int countCovered = 0;
+		int countFlag = 0;
 		boolean winner = false;
 		
 		for(int i = 0; i < row; i++) {
 			for(int j = 0; j < column; j++) {
-				if((gameState[i][j] != Field.covered) && (gameState[i][j] == Field.flag && containsBomb[i][j])) {
-					winner = true;
+				if(gameState[i][j] == null || gameState[i][j] == Field.covered) {
+					++countCovered;
 				}
 			}
+		}
+		if (countCovered > 0) {
+			winner = false;
+			return winner;
+		}
+		
+		for(int i = 0; i < row; i++) {
+			for(int j = 0; j < column; j++) {
+				if ((gameState[i][j] == Field.flag && !containsBomb[i][j])) {
+					++countFlag;
+				}
+			}
+		}
+		if (countCovered == 0 && countFlag == 0) {
+			winner = true;
 		}
 		
 		return winner;
