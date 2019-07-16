@@ -1,11 +1,6 @@
-import java.util.Scanner;
 
-public class Field {
+public enum Field {
 	
-	protected int rows;
-	protected int columns;
-	
-//	public static int[][] drawField(int rows, int columns) {
-//		return int[][] field = new int[rows][columns];
-//	}
+	covered, flag, empty, one, two, three, four, five, six, seven, eight;   
+
 }
