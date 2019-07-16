@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class MinefieldApp {
 	public static void main(String[] args) {
 		boolean terminateGame = false;
+		
 		Play playChoice;
 
 		Scanner scan = new Scanner(System.in);
@@ -30,6 +31,8 @@ public class MinefieldApp {
 		drawField(rows, columns);
 		// displayField(gameState);
 		scan.nextLine();
+		
+		displaySolution(containsBomb, gameState);
 
 		while (!terminateGame) {
 			// displayField(gameState);
@@ -40,9 +43,15 @@ public class MinefieldApp {
 				doFlag(gameState, userTarget);
 			} else if (playChoice == Play.UNCOVER) {
 				doUncover(containsBomb, gameState, userTarget);
+				terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
 			}
-
-			terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
+			
+			if(weHaveAWinner(gameState, containsBomb)) {
+				terminateGame = true;
+				System.out.println("You Win!");
+				
+			}
+			
 			if (terminateGame == false) {
 				displayField(gameState);
 			}
@@ -51,6 +60,47 @@ public class MinefieldApp {
 		}
 
 		// displaySolution(containsBomb, gameState);
+	}
+	
+	public static void search(Field[][] gameState, int x, int y) {
+		
+	}
+	
+	public static boolean weHaveAWinner(Field[][] gameState, boolean[][] containsBomb) {
+		
+		int row = gameState.length;
+		int column =gameState[0].length;
+		int count = 0;
+		boolean winner = false;
+		
+		for(int i = 0; i < row; i++) {
+			for(int j = 0; j < column; j++) {
+				if((gameState[i][j] != Field.covered) && (gameState[i][j] == Field.flag && containsBomb[i][j])) {
+					winner = true;
+				}
+			}
+		}
+		
+		return winner;
+		
+//		if(count > 0) {
+//			winner = false;
+//			return winner;
+//		} 
+//	
+//		for(int i = 0; i < row; i++) {
+//			for(int j = 0; j < column; j++) {
+//				if(gameState[i][j] == Field.flag && !containsBomb[i][j]) {
+//					winner = false;
+//					return winner;
+//				}
+//			}
+//		}
+//		if(count == 0 && winner != false) {
+//		return true;
+//		} else {
+//			return false;
+//		}
 	}
 
 	public static boolean winOrLose(int[] userTarget, boolean[][] containsBomb, Field[][] gameState,
@@ -243,10 +293,12 @@ public class MinefieldApp {
 	}
 
 	public static void clear(boolean[][] containsBomb, Field[][] gameState, int x, int y) {
-		
+//		x=x+1;
+//		y=y+1;
 		try {
 //			if (minesNear(x-1, y-1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x - 1, y - 1);
+//				gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
 //			}
 			gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -255,6 +307,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x, y-1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x, y - 1);
+//				gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
 //			}
 			gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -263,6 +316,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x+1, y-1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x + 1, y - 1);
+//				gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
 //			}
 			gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -271,6 +325,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x-1, y, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x - 1, y);
+//				gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
 //			}
 			gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -279,6 +334,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x+1, y, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x + 1, y);
+//				gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
 //			}
 			gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -287,6 +343,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x-1, y+1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x - 1, y + 1);
+//				gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
 //			}
 			gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -295,6 +352,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x, y+1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x, y + 1);
+//				gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
 //			}
 			gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -303,6 +361,7 @@ public class MinefieldApp {
 		try {
 //			if (minesNear(x+1, y+1, containsBomb) == Field.empty) {
 //				clear(containsBomb, gameState, x + 1, y + 1);
+//				gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
 //			}
 			gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
