@@ -1,11 +1,17 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import javax.swing.JFrame;
+
 
 public class MinefieldApp {
 	public static void main(String[] args) {
 		boolean terminateGame = false;
 		Play playChoice;
 		Scanner scan = new Scanner(System.in);
+		Gui tester = new Gui();
+		tester.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //terminates program when the window is closed
+		tester.setSize(525,540);
+		tester.setVisible(true);
 		
 		System.out.println("Let's create your field.");
 		int rows = Validate.getRows(scan);
