@@ -10,7 +10,7 @@ public class MinefieldApp {
 		Scanner scan = new Scanner(System.in);
 		Gui tester = new Gui();
 		tester.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //terminates program when the window is closed
-		tester.setSize(525,540);
+		tester.setSize(525,240);
 		tester.setVisible(true);
 		
 		System.out.println("Let's create your field.");
