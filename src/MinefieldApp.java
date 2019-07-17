@@ -3,15 +3,12 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 
+
 public class MinefieldApp {
 	public static void main(String[] args) {
 		boolean terminateGame = false;
 		Play playChoice;
 		Scanner scan = new Scanner(System.in);
-		Gui tester = new Gui();
-		tester.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //terminates program when the window is closed
-		tester.setSize(725,240);
-		tester.setVisible(true);
 		
 		System.out.println("Let's create your field.");
 		int rows = Validate.getRows(scan);
@@ -564,12 +561,14 @@ public class MinefieldApp {
 			System.out.println();
 		}
 	}
-
+	
 	public static boolean[][] placeMines(Scanner scan, int rows, int columns) {
-
 		double input = Validate.getDouble(scan);
+		return placeMines(input, rows, columns);
+	}
 
-		int bombDensity = (int) ((input / 100) * (rows * columns));
+	public static boolean[][] placeMines(double density, int rows, int columns) {
+		int bombDensity = (int) ((density / 100) * (rows * columns));
 
 		boolean[][] containsBomb = new boolean[rows][columns];
 
