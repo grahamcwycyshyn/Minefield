@@ -17,7 +17,6 @@ public class Validate {
 			scan.nextLine();
 		} 
 		} while (rows < 1 || rows > 9);
-		
 		return rows;
 	}
 	
@@ -35,7 +34,6 @@ public class Validate {
 			scan.nextLine();
 		}
 		} while (columns < 1 || columns > 9);
-		
 		return columns;
 
 	}
@@ -56,7 +54,6 @@ public class Validate {
 				System.out.println("Please enter a number between 1 and 100: ");
 			}
 		} while (input < 1 || input > 100);
-		
 		return input;
 	}
 	
@@ -69,7 +66,6 @@ public class Validate {
 		do {
 			try {
 			input = scan.nextLine();
-			//scan.nextLine();
 			} catch (InputMismatchException ex) {
 				System.out.println("Please enter \"y\" or \"n\": ");
 				isValid = false;
@@ -84,8 +80,6 @@ public class Validate {
 		}
 		
 		} while (!isValid);
-		
-		
 		return isValid;
 	}
 	
