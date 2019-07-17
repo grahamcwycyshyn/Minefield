@@ -4,19 +4,13 @@ import java.util.Scanner;
 public class MinefieldApp {
 	public static void main(String[] args) {
 		boolean terminateGame = false;
-		
 		Play playChoice;
-
 		Scanner scan = new Scanner(System.in);
-
-		System.out.println("How many rows would you like?");
-
-		int rows = scan.nextInt();
-
-		System.out.println("How many columns would you like?");
-
-		int columns = scan.nextInt();
-
+		
+		System.out.println("Let's create your field.");
+		int rows = Validate.getRows(scan);
+		int columns = Validate.getColumns(scan);
+		
 		Field[][] gameState = new Field[rows][columns];
 
 		boolean[][] uncover = new boolean[rows][columns];

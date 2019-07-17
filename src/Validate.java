@@ -2,6 +2,43 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Validate {
+	
+	public static int getRows(Scanner scan) {
+		int rows = 0;
+		
+		do {
+		System.out.println("How many rows would you like? "
+				+ "\nPlease enter a number between 1 and 9: ");
+		try {
+			rows = scan.nextInt();
+		} catch (InputMismatchException ex) {
+			System.out.println("That was not a valid input. "
+								+ "Let's try again.\n");
+			scan.nextLine();
+		} 
+		} while (rows < 1 || rows > 9);
+		
+		return rows;
+	}
+	
+	public static int getColumns(Scanner scan) {
+		int columns = 0;
+		
+		do {
+		System.out.println("How many columns would you like?"
+				+ "\nPlease enter a number between 1 and 9: ");
+		try {
+			columns = scan.nextInt();
+		} catch (InputMismatchException ex) {
+			System.out.println("That was not a valid input. "
+								+ "Let's try again.\n");
+			scan.nextLine();
+		}
+		} while (columns < 1 || columns > 9);
+		
+		return columns;
+
+	}
 
 	public static double getDouble(Scanner scan) {
 		Double input = 0.0;
