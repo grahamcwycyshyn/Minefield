@@ -19,6 +19,7 @@ public class MinefieldApp {
 		boolean[][] containsBomb = placeMines(scan, rows, columns);
 		int[] userTarget = new int[2];
 
+		displayField(gameState);
 		scan.nextLine();
 		
 
