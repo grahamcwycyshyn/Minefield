@@ -1,8 +1,5 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import javax.swing.JFrame;
-
-
 
 public class MinefieldApp {
 	public static void main(String[] args) {
@@ -105,21 +102,21 @@ public class MinefieldApp {
 	public static void displayField(Field gameState[][]) {
 		for (int i = 0; i < gameState[0].length; ++i) {
 			if (i == 0) {
-				System.out.print("  ");
+				System.out.printf("%-3s","  ");
 			}
-			System.out.print(i + 1 + " ");
+			System.out.printf("%-3s", i + 1 + " ");
 		}
 		System.out.println();
 
 		for (int i = 0; i < gameState.length; i++) {
 			for (int j = 0; j < gameState[0].length; j++) {
 				if (j == 0) {
-					System.out.print(i + 1 + " ");
+					System.out.printf("%-3s", i + 1 + " ");
 				}
 				if (gameState[i][j] == null) {
-					System.out.print("- ");
+					System.out.printf("%-3s", "- ");
 				} else {
-					System.out.print(print(gameState, i, j));
+					System.out.printf("%-3s", print(gameState, i, j));
 				}
 			}
 			System.out.println();
@@ -130,27 +127,27 @@ public class MinefieldApp {
 
 		switch (gameState[i][j]) {
 		case one:
-			return "1 ";
+			return "1";
 		case two:
-			return "2 ";
+			return "2";
 		case three:
-			return "3 ";
+			return "3";
 		case four:
-			return "4 ";
+			return "4";
 		case five:
-			return "5 ";
+			return "5";
 		case six:
-			return "6 ";
+			return "6";
 		case seven:
-			return "7 ";
+			return "7";
 		case eight:
-			return "8 ";
+			return "8";
 		case covered:
-			return "- ";
+			return "-";
 		case flag:
-			return "* ";
+			return "*";
 		default:
-			return "  ";
+			return " ";
 		}
 
 	}
@@ -440,38 +437,38 @@ public class MinefieldApp {
 
 		for (int i = 0; i < column; ++i) {
 			if (i == 0) {
-				System.out.print("  ");
+				System.out.printf("%-3s","  ");
 			}
-			System.out.print(i + 1 + " ");
+			System.out.printf("%-3s", i + 1 + " ");
 		}
 		System.out.println();
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < column; j++) {
 				if (j == 0) {
-					System.out.print(i + 1 + " ");
+					System.out.printf("%-3s", i + 1 + " ");
 				}
 				if (containsBomb[i][j] == true) {
-					System.out.print("* ");
+					System.out.printf("%-3s", "* ");
 				} else {
 					if (minesNear(i, j, containsBomb) == Field.one) {
-						System.out.print("1 ");
+						System.out.printf("%-3s", "1 ");
 					} else if (minesNear(i, j, containsBomb) == Field.two) {
-						System.out.print("2 ");
+						System.out.printf("%-3s", "2 ");
 					} else if (minesNear(i, j, containsBomb) == Field.three) {
-						System.out.print("3 ");
+						System.out.printf("%-3s", "3 ");
 					} else if (minesNear(i, j, containsBomb) == Field.four) {
-						System.out.print("4 ");
+						System.out.printf("%-3s", "4 ");
 					} else if (minesNear(i, j, containsBomb) == Field.five) {
-						System.out.print("5 ");
+						System.out.printf("%-3s", "5 ");
 					} else if (minesNear(i, j, containsBomb) == Field.six) {
-						System.out.print("6 ");
+						System.out.printf("%-3s", "6 ");
 					} else if (minesNear(i, j, containsBomb) == Field.seven) {
-						System.out.print("7 ");
+						System.out.printf("%-3s", "7 ");
 					} else if (minesNear(i, j, containsBomb) == Field.eight) {
-						System.out.print("8 ");
+						System.out.printf("%-3s", "8 ");
 					} else {
-						System.out.print("  ");
+						System.out.printf("%-3s", "  ");
 					}
 				}
 			}

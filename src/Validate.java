@@ -7,8 +7,8 @@ public class Validate {
 		int rows = 0;
 		
 		do {
-		System.out.println("How many rows would you like? "
-				+ "\nPlease enter a number between 1 and 9: ");
+		System.out.println("How many rows would you like? ");
+//				+ "\nPlease enter a number between 1 and 9: ");
 		try {
 			rows = scan.nextInt();
 		} catch (InputMismatchException ex) {
@@ -16,7 +16,7 @@ public class Validate {
 								+ "Let's try again.\n");
 			scan.nextLine();
 		} 
-		} while (rows < 1 || rows > 9);
+		} while (rows < 1 || rows > 50);
 		return rows;
 	}
 	
@@ -24,8 +24,8 @@ public class Validate {
 		int columns = 0;
 		
 		do {
-		System.out.println("How many columns would you like?"
-				+ "\nPlease enter a number between 1 and 9: ");
+		System.out.println("How many columns would you like?");
+//				+ "\nPlease enter a number between 1 and 9: ");
 		try {
 			columns = scan.nextInt();
 		} catch (InputMismatchException ex) {
@@ -33,7 +33,7 @@ public class Validate {
 								+ "Let's try again.\n");
 			scan.nextLine();
 		}
-		} while (columns < 1 || columns > 9);
+		} while (columns < 1 || columns > 50);
 		return columns;
 
 	}
