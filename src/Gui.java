@@ -17,6 +17,8 @@ public class Gui extends JFrame {
 	protected JLabel columnsLabel;
 	protected JTextField rowsInput;
 	protected JTextField columnsInput;
+	protected JTextField bombDensityInput;
+	protected JLabel bombDensityLabel;
 	
 	public Gui() {
 		super("Minefield"); //the title bar
@@ -48,6 +50,15 @@ public class Gui extends JFrame {
 			columnsInput.setText("0");
 			//columnsInput.addActionListener(this);
 			add(columnsInput);
+			
+			bombDensityLabel = new JLabel("What bomb density would you like? (1-100): ");
+			add(bombDensityLabel);
+			
+			bombDensityInput = new JTextField(15);
+			bombDensityInput.setEditable(true);
+			bombDensityInput.setText("0");
+			//columnsInput.addActionListener(this);
+			add(bombDensityInput);
 			
 			Handler handler = new Handler();
 			rowsInput.addActionListener(handler);
@@ -85,6 +96,18 @@ public class Gui extends JFrame {
 	      layoutConst.gridy = 1;
 	      layoutConst.insets = new Insets(10, 10, 10, 10);
 	      add(columnsInput, layoutConst);
+	      
+	      layoutConst = new GridBagConstraints();
+	      layoutConst.gridx = 0;
+	      layoutConst.gridy = 2;
+	      layoutConst.insets = new Insets(10, 10, 10, 10);
+	      add(bombDensityLabel, layoutConst);
+
+	      layoutConst = new GridBagConstraints();
+	      layoutConst.gridx = 1;
+	      layoutConst.gridy = 2;
+	      layoutConst.insets = new Insets(10, 10, 10, 10);
+	      add(bombDensityInput, layoutConst);
 		
 		
 		
