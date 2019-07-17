@@ -18,6 +18,8 @@ public class MinefieldApp {
 		int columns = scan.nextInt();
 
 		Field[][] gameState = new Field[rows][columns];
+		
+		boolean[][] checked = new boolean[gameState.length][gameState[0].length];
 
 		boolean[][] uncover = new boolean[rows][columns];
 
@@ -42,13 +44,14 @@ public class MinefieldApp {
 			if (playChoice == Play.FLAG) {
 				doFlag(gameState, userTarget);
 			} else if (playChoice == Play.UNCOVER) {
-				doUncover(containsBomb, gameState, userTarget);
+				doUncover(checked, containsBomb, gameState, userTarget);
 				terminateGame = winOrLose(userTarget, containsBomb, gameState, terminateGame);
 			}
 			
 			if(weHaveAWinner(gameState, containsBomb)) {
 				terminateGame = true;
 				System.out.println("You Win!");
+				displaySolution(containsBomb, gameState);
 				
 			}
 			
@@ -122,7 +125,7 @@ public class MinefieldApp {
 	public static boolean winOrLose(int[] userTarget, boolean[][] containsBomb, Field[][] gameState,
 			boolean terminateGame) {
 
-		if (containsBomb[userTarget[0]][userTarget[1]] == true) {
+		if ((containsBomb[userTarget[0]][userTarget[1]]) == true && gameState[userTarget[0]][userTarget[1]] != Field.flag) {
 			System.out.println("Game Over");
 			displaySolution(containsBomb, gameState);
 			terminateGame = true;
@@ -286,7 +289,7 @@ public class MinefieldApp {
 		// return gameState;
 	}
 
-	public static Field[][] doUncover(boolean[][] containsBomb, Field[][] gameState, int[] userTarget) {
+	public static Field[][] doUncover(boolean[][] checked, boolean[][] containsBomb, Field[][] gameState, int[] userTarget) {
 
 //		System.out.println("Time to target.");
 //		int rowInput = whatRow(scan, gameState.length);
@@ -299,7 +302,7 @@ public class MinefieldApp {
 			gameState[userTarget[0]][userTarget[1]] = Field.covered;
 		} else if(minesNear(userTarget[0], userTarget[1], containsBomb) == Field.empty){
 			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
-			clear(containsBomb, gameState, userTarget[0], userTarget[1]);
+			clear(checked, containsBomb, gameState, userTarget[0], userTarget[1]);
 		}else{
 		
 			gameState[userTarget[0]][userTarget[1]] = minesNear(userTarget[0], userTarget[1], containsBomb);
@@ -308,82 +311,119 @@ public class MinefieldApp {
 		return gameState;
 	}
 
-	public static void clear(boolean[][] containsBomb, Field[][] gameState, int x, int y) {
-//		x=x+1;
-//		y=y+1;
+	public static void clear(boolean[][] checked, boolean[][] containsBomb, Field[][] gameState, int x, int y) {
+		
+		
 		try {
-//			if (minesNear(x-1, y-1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x - 1, y - 1);
-//				gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
-//			}
 			gameState[x - 1][y - 1] = minesNear(x - 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x, y-1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x, y - 1);
-//				gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
-//			}
 			gameState[x][y - 1] = minesNear(x, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x+1, y-1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x + 1, y - 1);
-//				gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
-//			}
 			gameState[x + 1][y - 1] = minesNear(x + 1, y - 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x-1, y, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x - 1, y);
-//				gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
-//			}
 			gameState[x - 1][y] = minesNear(x - 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x+1, y, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x + 1, y);
-//				gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
-//			}
 			gameState[x + 1][y] = minesNear(x + 1, y, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x-1, y+1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x - 1, y + 1);
-//				gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
-//			}
 			gameState[x - 1][y + 1] = minesNear(x - 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x, y+1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x, y + 1);
-//				gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
-//			}
 			gameState[x][y + 1] = minesNear(x, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 
 		try {
-//			if (minesNear(x+1, y+1, containsBomb) == Field.empty) {
-//				clear(containsBomb, gameState, x + 1, y + 1);
-//				gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
-//			}
 			gameState[x + 1][y + 1] = minesNear(x + 1, y + 1, containsBomb);
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
-
 		
+		try {
+			if (minesNear(x-1, y-1, containsBomb) == Field.empty && checked[x-1][y-1] == false) {
+				checked[x-1][y-1] = true;
+				clear(checked, containsBomb, gameState, x - 1, y - 1);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x, y-1, containsBomb) == Field.empty && checked[x][y-1] == false) {
+				checked[x][y-1] = true;
+				clear(checked, containsBomb, gameState, x, y - 1);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x+1, y-1, containsBomb) == Field.empty && checked[x+1][y-1] == false) {
+				checked[x+1][y-1] = true;
+				clear(checked, containsBomb, gameState, x + 1, y - 1);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x-1, y, containsBomb) == Field.empty && checked[x-1][y] == false) {
+				checked[x-1][y] = true;
+				clear(checked, containsBomb, gameState, x - 1, y);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x+1, y, containsBomb) == Field.empty && checked[x+1][y] == false) {
+				checked[x+1][y] = true;
+				clear(checked, containsBomb, gameState, x + 1, y);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x-1, y+1, containsBomb) == Field.empty && checked[x-1][y+1] == false) {
+				checked[x-1][y+1] = true;
+				clear(checked, containsBomb, gameState, x - 1, y + 1);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x, y+1, containsBomb) == Field.empty && checked[x][y+1] == false) {
+				checked[x][y+1] = true;
+				clear(checked, containsBomb, gameState, x, y + 1);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
+
+		try {
+			if (minesNear(x+1, y+1, containsBomb) == Field.empty && checked[x+1][y+1] == false) {
+				checked[x+1][y+1] = true;
+				clear(checked, containsBomb, gameState, x + 1, y + 1);
+				
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 	}
 	
 	public static Field minesNear(int x, int y, boolean[][] containsBomb) {
